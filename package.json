@@ -1,0 +1,15 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "A centralized blockchain with nodeJS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node blockchain.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
