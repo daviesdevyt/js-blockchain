@@ -1,13 +1,14 @@
 import { MongoClient } from "mongodb"
 
-
-const client = new MongoClient("mongodb://localhost:27017",
+export const client = new MongoClient("mongodb://localhost:27017",
     { useNewUrlParser: true, useUnifiedTopology: true });
 
-var db = client.db("blockchain").collection("blockchain")
+export var db = client.db("blockchain").collection("blockchain")
 
-export function getLastTx(){
-    return db.find({}).sort({ _id: -1 }).limit(1)
+export async function getLastTx(){
+    var lastTxList = db.find({}).sort({ _id: -1 }).limit(1)
+    const lastTX = await lastTxList.toArray()
+    return lastTX[0]
 }
 
 export async function addTx(tx){
@@ -18,4 +19,11 @@ export function closeDB(){
     client.close();
 }
 
-export default {getLastTx, addTx, client, closeDB};
+export async function getUserTransactions(address){
+    const values = db.find({
+        $or: [{sender: address}, {reciever: address}]
+    })
+    return await values.toArray()
+}
+
+export default {getLastTx, addTx, closeDB, getUserTransactions};
